@@ -1,0 +1,145 @@
+<!-- Filter Datatables -->
+<section id="ngx-datatable-filter">
+    <div *ngIf="corporativos" class="row">
+        <div class="col-12">
+            <!-- Filter starts -->
+            <div class="users-list-filter px-2">
+                <form>
+                    <div class="row border rounded py-2 mb-2 mx-n2">
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <label for="users-list-verified">Status</label>
+                            <fieldset class="form-group">
+                                <select disabled id="users-list-verified" class="form-control">
+                    <option value="">Todos</option>
+                  </select>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <label for="users-list-role">Creado Por</label>
+                            <fieldset class="form-group">
+                                <select disabled id="users-list-role" class="form-control">
+                    <option value="">Todos</option>
+                  </select>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-3">
+                            <label for="users-list-status">Asignado a</label>
+                            <fieldset class="form-group">
+                                <select disabled id="users-list-status" class="form-control">
+                    <option value="">Todos</option>
+                  </select>
+                            </fieldset>
+                        </div>
+
+                        <div class="col-12 col-sm-6 col-lg-3 d-flex justify-content-end">
+                            <button type="reset" class="btn btn-success bg-success btn-icon round ml-5 mb-5"> <i class="fa fa-plus"></i> </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <!-- Filter ends -->
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-body">
+                        <!-- ngx-datatable-filter -->
+                        <fieldset class="form-group">
+                            <label>MOSTRAR
+      <select name="users-list-select"
+        class="form-control form-control-sm d-inline-block width-100 p-right-25 pl-4 mx-1">
+        <option value="10">10</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+      </select>
+      ENTRADAS</label>
+                            <label for="ngx-filter-ref" class="float-right">BUSCAR:
+      <input disabled id="ngx-filter-ref" class="form-control form-control-sm d-inline-block width-200 ml-1"
+        type="text" />
+    </label>
+                        </fieldset>
+
+
+                        <ngx-datatable class="bootstrap core-bootstrap" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [limit]="10" [rows]="corporativos" [scrollbarH]="true" [columns]="">
+
+                            <ngx-datatable-column name="CORPORATIVO" [width]="170">
+                                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                                    <div class="d-flex align-items-center">
+                                        <img class="rounded-circle mr-1" [src]="row.S_LogoURL" height="32" width="32" alt="img" />
+
+                                        <div class="cell-line-height">
+                                            <a class="line-height-1 mb-0" [routerLink]="['/corporativos', 'detalle', row.id]">{{ row.S_NombreCorto }}</a>
+                                            <p>{{ row.S_NombreCompleto }}</p>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="URL" [width]="300">
+                                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                                    <div class="d-flex align-items-center">
+                                        <div class="cell-line-height">
+                                            <a class="line-height-1 mb-0">devschoolcloud.com/sa/#/{{ row.S_SystemUrl}}</a>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="INCORPORACIÓN" [width]="170">
+                                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                                    <div class="d-flex align-items-center">
+                                        <div class="cell-line-height">
+                                            <p>{{ row.D_FechaIncorporacion | date:'dd-MMM-yyyy' }}</p>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="CREADO EL" [width]="250">
+                                <ng-template let-row="row" let-name="value" ngx-datatable-cell-template>
+                                    <div class="d-flex align-items-center">
+                                        <div class="cell-line-height">
+                                            <p>{{ row.created_at | date:'dd-MMM-yyyy' }}</p>
+                                            <p>por: {{ row.user_created.S_Nombre }}</p>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="ASIGNADO A" [width]="140">
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <p>{{ row.asignado.S_Nombre }}</p>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="STATUS" [width]="100">
+                                <ng-template let-row="row" let-status="value" ngx-datatable-cell-template>
+                                    <div class="badge" [ngClass]="{
+                                        'bg-light-success': row.S_Activo == '1',
+                                        'bg-light-purple': row.S_Activo != '1'
+                                      }">
+
+                                        <span *ngIf="row.S_Activo == '1'">Activo</span>
+                                        <span *ngIf="row.S_Activo != '1'">Inactivo</span>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column name="ACCIONES" [width]="100">
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <a data-toggle="tooltip" data-placement="right" title="Ver Detalle" [routerLink]="['/corporativos', 'detalle', row.id]"><i  class="icono ft-eye text-primary cursor-pointer"></i></a>
+                                    <a title="Desabilitado" disabled><i class="icono2 ft-check-circle text-primary cursor-pointer"></i></a>
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </ngx-datatable>
+                        <!-- ngx-datatable-filter -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+<!--/ Filter Datatables -->

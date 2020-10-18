@@ -1,0 +1,233 @@
+<div class="card">
+    <div *ngIf="ArrayCorporativo" class="card-content">
+        <div *ngFor="let c of ArrayCorporativo" class="card-body">
+            <ul ngbnav="" class="nav-tabs justify-content-left nav" role="tablist">
+                <li class="nav-item">
+                    <a (click)="tabs = !tabs" [ngClass]="{
+                        'active': tabs,
+                        '': !tabs
+                      }" ngbnavlink="" class="nav-link d-flex align-items-center" id="ngb-nav-0" role="tab" aria-controls="account" aria-selected="true" aria-disabled="false">
+                        <i class="ft-user mr-1"></i><span class="d-none d-sm-block">Datos Generales</span>
+                    </a>
+                    <!---->
+                </li>
+                <li class="nav-item">
+                    <a (click)="tabs = !tabs" [ngClass]="{
+                        '': tabs,
+                        'active': !tabs
+                      }" ngbnavlink="" class="nav-link d-flex align-items-center" id="ngb-nav-1" role="tab" aria-controls="contacts" aria-selected="false" aria-disabled="false">
+                        <i class="ft-info mr-1"></i><span class="d-none d-sm-block">Contactos</span>
+                    </a>
+                    <!---->
+                </li>
+            </ul>
+            <div class="tab-content">
+                <!-- TABS 1-->
+                <div [ngClass]="{
+                    'tab-pane fade show active': tabs,
+                    'tab-pane fade ': !tabs
+                  }" class=" ng-star-inserted" id="account" role="tabpanel" aria-labelledby="ngb-nav-0">
+                    <div id="" class="mt-2 ng-star-inserted">
+                        <div class="media"><img src="{{c.S_LogoURL}}" alt="" height="64" width="64" class="users-avatar-shadow avatar mr-3 rounded-circle">
+                            <div class="media-body">
+                                <h4>{{ c.S_NombreCorto }} </h4>
+                                <div class="d-flex flex-sm-row flex-column justify-content-start px-0 mb-sm-2">
+                                </div>
+                            </div>
+                        </div>
+                        <form novalidate="" class=" mt-5 ng-pristine ng-valid">
+                            <div class="row">
+                                <div class="col-12 col-md-3">
+                                    <div class="form-group">
+                                        <div class="controls">
+                                            <label for="txtnombrecorto">NOMBRE CORTO</label>
+                                            <input #txtNombreCorto value="{{ c.S_NombreCorto }}" [readonly]="habilitado" type="text" name="txtnombrecorto" id="txtnombrecorto" placeholder="" required="" aria-invalid="false" class="form-control"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="txtfincorporacion">FECHA DE INCORPORACIÓN *</label>
+                                        <div class="input-group mb-3">
+                                            <input #txtFechaIncorporacion [readonly]="habilitado" name="txtfincorporacion" id="txtfincorporacion" type="text" class="form-control" placeholder="" value="{{ c.D_FechaIncorporacion | date:'yyyy-MM-dd' }}" aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                            <div class="input-group-append">
+                                                <span class="input-group-text" id="basic-addon2"><i class="fa fa-calendar"></i></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="controls">
+                                            <label for="txtnombrecompleto">NOMBRE COMPLETO</label>
+                                            <input #txtNombreCompleto [readonly]="habilitado" type="text" name="txtnombrecompleto" id="txtnombrecompleto" placeholder="" value="{{ c.S_NombreCompleto }}" required="" aria-invalid="false" class="form-control"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-6 controls " style="padding: 0;">
+                                            <label for="txturl">URL DEL SISTEMA *</label>
+                                            <input #txtURL [readonly]="habilitado" type="text" name="txturl" id="txturl" placeholder="" value="{{ c.S_SystemUrl }}" required="" aria-invalid="false" class="form-control"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <div class="form-group">
+                                        <label for="cbstatus">STATUS *</label>
+                                        <select #cbStatus [disabled]="habilitado" class="form-control" name="cbstatus" id="cbstatus">
+                                            <option [selected]='c.S_Activo == 1' value="1" >ACTIVO</option>
+                                            <option [selected]='c.S_Activo == 0' value="0" >INACTIVO</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div *ngIf="mostrar" class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                    <button type="submit" class="btn btn-secondary  mb-2 mb-sm-0 mr-sm-2" routerLink="/corporativos">Regresar</button>
+                                    <button (click)="mostrar = !mostrar; habilitado = !habilitado; " type="submit" class="btn btn-primary">Editar</button>
+                                </div>
+                                <div *ngIf="!mostrar" class="col-12 d-flex flex-sm-row flex-column justify-content-end mt-3 mt-sm-2">
+                                    <button (click)="mostrar = !mostrar; habilitado = !habilitado " type="submit" class="btn btn-secondary  mb-2 mb-sm-0 mr-sm-2">Cancelar</button>
+                                    <button (click)="this.corporativo.id = c.id; this.corporativo.FK_Asignado_id = c.FK_Asignado_id; this.corporativo.S_LogoURL = c.S_LogoURL" type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!---->
+                </div>
+
+                <!-- TABS 2-->
+                <div [ngClass]="{
+                    'tab-pane fade show active': !tabs,
+                    'tab-pane fade ': tabs
+                  }" class="ng-star-inserted " id="contacts" role="tabpanel" aria-labelledby="ngb-nav-1">
+                    <div id="" class="mt-2 ng-star-inserted">
+                        <!-- TABLE CONTACTS -->
+                        <ngx-datatable class="bootstrap core-bootstrap" [columnMode]="'force'" [headerHeight]="50" [footerHeight]="50" rowHeight="auto" [limit]="10" [rows]="c.tw_contactos_corporativo" [scrollbarH]="true" [columns]="">
+
+                            <ngx-datatable-column name="NOMBRE" [width]="200">
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <div class="d-flex align-items-center">
+                                        <div class="cell-line-height">
+                                            <p>{{ row.S_Nombre}}</p>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="PUESTO" [width]="100">
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <div class="d-flex align-items-center">
+                                        <div class="cell-line-height">
+                                            <p>{{ row.S_Puesto}}</p>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="TELEFONO" [width]="150">
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <div class="d-flex align-items-center">
+                                        <div class="cell-line-height">
+                                            <p>{{ row.N_TelefonoFijo}}</p>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="CELULAR" [width]="150">
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <div class="d-flex align-items-center">
+                                        <div class="cell-line-height">
+                                            <p>{{ row.N_TelefonoMovil}}</p>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="EMAIL" [width]="200">
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <div class="d-flex align-items-center">
+                                        <div class="cell-line-height">
+                                            <p>{{ row.S_Email}}</p>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="OBSERVACIÓN" [width]="200">
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <div class="d-flex align-items-center">
+                                        <div class="cell-line-height">
+                                            <p>{{ row.S_Comentarios}}</p>
+                                        </div>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                            <ngx-datatable-column name="ACCIONES" [width]="100">
+                                <ng-template let-row="row" ngx-datatable-cell-template>
+                                    <a (click)="seleccionarContacto(row); add = !add;"><i  class="iconodetalle fas fa-edit text-primary cursor-pointer"></i></a>
+                                    <a (click)="idContacto = row.id; deleteContacto();"><i class="iconodetalle fas fa-trash-alt text-primary cursor-pointer"></i></a>
+                                </ng-template>
+                            </ngx-datatable-column>
+
+                        </ngx-datatable>
+
+                        <!-- END TABLE CONTACTS -->
+                    </div>
+                    <!---->
+
+                    <!-- Forms Contacts -->
+                    <div>
+                        <form novalidate="" class=" mt-5 ng-pristine ng-valid">
+                            <div class="row">
+                                <div class="col-12 col-md-3">
+                                    <div class="form-group">
+                                        <div class="controls">
+                                            <label for="txtnombre">NOMBRE</label>
+                                            <input [(ngModel)]="contacto.S_Nombre" type="text" name="txtnombre" id="txtnombre" placeholder="" required="" aria-invalid="false" class="form-control"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="controls">
+                                            <label for="txttelefonofijo">TELÉFONO FIJO</label>
+                                            <input [(ngModel)]="contacto.N_TelefonoFijo" type="text" name="txttelefonofijo" id="txttelefonofijo" placeholder="" value="" required="" aria-invalid="false" class="form-control"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-3">
+                                    <div class="form-group">
+                                        <div class="controls">
+                                            <label for="txtpuesto">PUESTO</label>
+                                            <input [(ngModel)]="contacto.S_Puesto" type="text" name="txtpuesto" id="txtpuesto" placeholder="" value="" required="" aria-invalid="false" class="form-control"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="controls">
+                                            <label for="txttelefonomovil">TELÉFONO MOVIL</label>
+                                            <input [(ngModel)]="contacto.N_TelefonoMovil" type="text" name="txttelefonomovil" id="txttelefonomovil" placeholder="" value="" required="" aria-invalid="false" class="form-control"></div>
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-group">
+                                        <div class="controls">
+                                            <label for="txtcomentario">COMENTARIOS</label>
+                                            <input [(ngModel)]="contacto.S_Comentarios" type="text" name="txtcomentario" id="txtcomentario" placeholder="" value="" required="" aria-invalid="false" class="form-control"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col controls ">
+                                                <label for="txtemail">EMAIL</label>
+                                                <input [(ngModel)]="contacto.S_Email" type="text" name="txtemail" id="txtemail" placeholder="" value="" required="" aria-invalid="false" class="form-control">
+                                            </div>
+                                            <div class="col controls " style="padding: 0;margin-top: 25px;margin-left: 50px;">
+                                                <button *ngIf="!add" type="submit" (click)="this.contacto.tw_corporativo_id = c.id; updateContacto()" class="btn btn-secondary">ACTUALIZAR CONTACTO</button>
+                                                <button *ngIf="add" type="submit" (click)="this.contacto.tw_corporativo_id = c.id; saveContacto();" class="btn btn-secondary">AGREGAR CONTACTO</button>
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+                <!---->
+                <!---->
+                <!---->
+            </div>
+        </div>
+    </div>
+</div>
